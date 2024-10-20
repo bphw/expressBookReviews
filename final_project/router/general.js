@@ -4,6 +4,8 @@ let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
+const axios = require('axios');
+
 // Task6
 // Check if a user with the given username already exists
 const doesExist = (username) => {
@@ -19,6 +21,13 @@ const doesExist = (username) => {
         return false;
     }
 }
+
+// Task10
+const getDataUsingAxios = async () => {
+	const response = await axios.get(
+		books
+	);
+};
 
 public_users.post("/register", (req,res) => {
   //Write your code here
@@ -43,10 +52,13 @@ public_users.post("/register", (req,res) => {
 });
 
 // Get the book list available in the shop
-public_users.get('/',function (req, res) {
+public_users.get('/',await function (req, res) {
   //Write your code here
 //   Task1
-    return res.send(JSON.stringify(books, null, 4));
+    // return res.send(JSON.stringify(books, null, 4));
+
+//   Task10
+    getDataUsingAxios();
 });
 
 // Get book details based on ISBN
