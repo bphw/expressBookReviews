@@ -7,6 +7,7 @@ const public_users = express.Router();
 // Task6
 // Check if a user with the given username already exists
 const doesExist = (username) => {
+    console.log(users);
     // Filter the users array for any user with the same username
     let userswithsamename = users.filter((user) => {
         return user.username === username;
@@ -67,7 +68,7 @@ public_users.get('/isbn/:isbn',function (req, res) {
    */
 
   if (books[isbn]) {
-    return res.send(JSON.stringify(books[isbn]));
+    return res.status(200).json(books[isbn]);
   } else {
     return res.status(404).json({message: `ISBN ${isbn} not found.`});
   } 
@@ -117,7 +118,7 @@ public_users.get('/review/:isbn',function (req, res) {
   const isbn = req.params.isbn;
 
   if(books[isbn]) {
-    return res.status(200).json(books[isbn].review);
+    return res.status(200).json(books[isbn].reviews);
   } else {
     return res.status(404).json({message: `ISBN ${isbn} not found.`});
   }
