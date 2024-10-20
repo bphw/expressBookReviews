@@ -22,12 +22,6 @@ const doesExist = (username) => {
     }
 }
 
-// Task10
-const getDataUsingAxios = async () => {
-	const response = await axios.get(
-		books
-	);
-};
 
 public_users.post("/register", (req,res) => {
   //Write your code here
@@ -52,13 +46,20 @@ public_users.post("/register", (req,res) => {
 });
 
 // Get the book list available in the shop
-public_users.get('/',await function (req, res) {
+public_users.get('/', function (req, res) {
   //Write your code here
 //   Task1
-    // return res.send(JSON.stringify(books, null, 4));
+    return res.send(JSON.stringify(books, null, 4));
+});
 
+public_users.get('/async-await/books', async (req, res) => {
 //   Task10
-    getDataUsingAxios();
+    try {
+        const response = await axios.get("https://bambanx1-5000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai")
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json({message:`Internal server error: ${error}`});
+    }
 });
 
 // Get book details based on ISBN
@@ -66,18 +67,6 @@ public_users.get('/isbn/:isbn',function (req, res) {
   //Write your code here
   // Task2
   const isbn = req.params.isbn;
-  /* bellow if book has properties named 'isbn'
-   * but since in this project isbn refer to object number, 
-   * then simply use books[isbn]
-   
-  const arrayBooks = Object
-    .keys(books)
-    .map(key => books[key]);
-  
-  let book = arrayBooks.filter((item) => 
-    item.hasOwnProperty('isbn') && item.isbn === isbn
-  );
-   */
 
   if (books[isbn]) {
     return res.status(200).json(books[isbn]);
@@ -86,6 +75,22 @@ public_users.get('/isbn/:isbn',function (req, res) {
   } 
   
  });
+
+ public_users.get('/async-await/isbn/:isbn',async (req, res) => {
+//   Task11
+    const isbn = req.params.isbn;
+
+    if (books[isbn]) {
+        try {
+            const response = await axios.get(`https://bambanx1-5000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai/isbn/${isbn}`);
+            res.json(response.data);
+        } catch (error) {
+            res.status(500).json({message:`Internal server error: ${error}`});
+        }
+    } else {
+      return res.status(404).json({message: `ISBN ${isbn} not found.`});
+    }    
+});
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
@@ -105,6 +110,18 @@ public_users.get('/author/:author',function (req, res) {
   
 });
 
+public_users.get('/async-await/author/:author',async (req, res) => {
+// Task12
+    const author = req.params.author;
+
+    try {
+        const response = await axios.get(`https://bambanx1-5000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai/author/${author}`);
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json({message:`Internal server error: ${error}`});
+    }
+});
+
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
   //Write your code here
@@ -121,6 +138,18 @@ public_users.get('/title/:title',function (req, res) {
     return res.status(404).json({message: `Title ${title} not found.`});
   }
 
+});
+
+public_users.get('/async-await/title/:title',async (req, res) => {
+    // Task13
+    const title = req.params.title;
+    
+    try {
+        const response = await axios.get(`https://bambanx1-5000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai/title/${title}`);
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json({message:`Internal server error: ${error}`});
+    }
 });
 
 //  Get book review
