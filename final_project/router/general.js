@@ -54,7 +54,6 @@ public_users.get('/author/:author',function (req, res) {
   let matchAuthor = [];
 
   for(let key in books) {
-    console.log(books[key]);
     if (books[key].author === author) matchAuthor.push(books[key]);
   }
   if(matchAuthor.length > 0) {
@@ -71,7 +70,6 @@ public_users.get('/title/:title',function (req, res) {
   let matchTitle = [];
 
   for(let key in books) {
-    console.log(books[key]);
     if (books[key].title === title) matchTitle.push(books[key]);
   }
   if(matchTitle.length > 0) {
@@ -83,6 +81,12 @@ public_users.get('/title/:title',function (req, res) {
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
   //Write your code here
+  // Task5
+  const isbn = req.params.isbn;
+
+  if(books[isbn]) {
+    return res.send(JSON.stringify(books[isbn].review));
+  }
   return res.status(300).json({message: "Yet to be implemented"});
 });
 
